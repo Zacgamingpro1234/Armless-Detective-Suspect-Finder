@@ -1,0 +1,205 @@
+{
+    "suspects": [
+        {
+            "Name": "Charles",
+            "Traits": [
+                "Sheds hair oftenly",
+                "Writes in their diary",
+                "Likes to clean"
+            ]
+        },
+        {
+            "Name": "Nancy",
+            "Traits": [
+                "Has no Robux",
+                "Writes in their diary",
+                "Likes to clean"
+            ]
+        },
+        {
+            "Name": "Oliver",
+            "Traits": [
+                "Has no Robux",
+                "Writes in their diary",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Clara",
+            "Traits": [
+                "Bad at hiding their fingerprints",
+                "Cold-blooded",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Sophia",
+            "Traits": [
+                "Eats lots of food",
+                "Sheds hair oftenly",
+                "Bad at hiding their fingerprints"
+            ]
+        },
+        {
+            "Name": "Trey",
+            "Traits": [
+                "Eats lots of food",
+                "Cold-blooded",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Junior",
+            "Traits": [
+                "Sheds hair oftenly",
+                "Cold-blooded",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Buck",
+            "Traits": [
+                "Writes in their diary",
+                "Eats lots of food",
+                "Bad at hiding their fingerprints"
+            ]
+        },
+        {
+            "Name": "Donald",
+            "Traits": [
+                "Likes to clean",
+                "Eats lots of food",
+                "Bad at hiding their fingerprints"
+            ]
+        },
+        {
+            "Name": "Susan",
+            "Traits": [
+                "Sheds hair oftenly",
+                "Bad at hiding their fingerprints",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Betty",
+            "Traits": [
+                "Likes to clean",
+                "Sheds hair oftenly",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Thomas",
+            "Traits": [
+                "Likes to clean",
+                "Eats lots of food",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "David",
+            "Traits": [
+                "Likes to clean",
+                "Sheds hair oftenly",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Linda",
+            "Traits": [
+                "Writes in their diary",
+                "Bad at hiding their fingerprints",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Mary",
+            "Traits": [
+                "Writes in their diary",
+                "Eats lots of food",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "James",
+            "Traits": [
+                "Writes in their diary",
+                "Sheds hair oftenly",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Matthew",
+            "Traits": [
+                "Writes in their diary",
+                "Sheds hair oftenly",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Kyle",
+            "Traits": [
+                "Eats lots of food",
+                "Bad at hiding their fingerprints",
+                "Cold-blooded"
+            ]
+        },
+        {
+            "Name": "Herbert",
+            "Traits": [
+                "Likes to clean",
+                "Sheds hair oftenly",
+                "Bad at hiding their fingerprints"
+            ]
+        },
+        {
+            "Name": "Rebecca",
+            "Traits": [
+                "Writes in their diary",
+                "Bad at hiding their fingerprints",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Sara",
+            "Traits": [
+                "Likes to clean",
+                "Bad at hiding their fingerprints",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Bob",
+            "Traits": [
+                "Likes to clean",
+                "Eats lots of food",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "Jimbo",
+            "Traits": [
+                "Writes in their diary",
+                "Eats lots of food",
+                "Has no Robux"
+            ]
+        },
+        {
+            "Name": "William",
+            "Traits": [
+                "Likes to clean",
+                "Eats lots of food",
+                "Sheds hair oftenly"
+            ]
+        }
+    ],
+    "alltraits": [
+        "Sheds hair oftenly",
+        "Writes in their diary",
+        "Likes to clean",
+        "Has no Robux",
+        "Cold-blooded",
+        "Bad at hiding their fingerprints",
+        "Eats lots of food"
+    ]
+}
