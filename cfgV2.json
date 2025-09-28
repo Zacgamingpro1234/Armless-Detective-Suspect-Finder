@@ -201,5 +201,8 @@
         "Cold-blooded",
         "Bad at hiding their fingerprints",
         "Eats lots of food"
-    ]
+    ],
+    "pointsrequired": 2,
+    "maxpointsrequired": 3,
+    "minpointsrequired": 0
 }

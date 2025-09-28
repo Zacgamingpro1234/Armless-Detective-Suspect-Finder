@@ -1,7 +1,9 @@
+import dearpygui.dearpygui as dpg
 import json
 import os
 
-cfgpath = "cfg.json"
+# Config Loading
+cfgpath = "cfgV2.json"
 default_cfg = { # The default config to be used if not config file is found
         "suspects": [
             {"Name": "Charles", "Traits": ["Sheds hair oftenly", "Writes in their diary", "Likes to clean"]},
@@ -33,60 +35,95 @@ default_cfg = { # The default config to be used if not config file is found
         "alltraits": [
             "Sheds hair oftenly", "Writes in their diary", "Likes to clean", "Has no Robux",
             "Cold-blooded", "Bad at hiding their fingerprints", "Eats lots of food"
-        ]              
+        ],
+        "pointsrequired": 2,
+        "maxpointsrequired": 3,
+        "minpointsrequired": 0
 }
-
-def LoadCfg(): # Loads the config, either default or .json
+def LoadCfg(abc): # Loads the config, either default or .json
+    global cfgdata
     if os.path.exists(cfgpath):
         with open(cfgpath, "r") as f:
-           return json.load(f)
+           cfgdata = json.load(f)
     else:
         with open(cfgpath, "w") as f:
            json.dump(default_cfg, f, indent=4)
-    print("Deleted cfg.json file detected, Please Configure It If It Is Outdated!")
-    return default_cfg
+        print("Deleted cfg.json file detected, Please Configure It If It Is Outdated!")
+        cfgdata = default_cfg
+    if abc == "SetLoad":
+        dpg.set_value("Points", cfgdata["pointsrequired"])
+        LoadWindows(True)
+LoadCfg(0)
 
-def FindClues(): # Gets all clues
-    traitable = cfgdata["alltraits"]
-    clues = {}
-    for trait in traitable:
-       print("Suspect, " + trait)
-       ipt = input()
-       if ipt == "y":
-        clues[trait] = True    
-    return clues
+def SaveCfg():
+    print("Hi")
 
-def FindSuspect(clues: dict): # Find the suspect with the given clues
-   suspect = []
-   suspects = cfgdata["suspects"]
-   for plrindex, person in enumerate(suspects):
-      istraited = [False, False, False]
-      for index, plrtrait in enumerate(person["Traits"]): # A list of the plrs traits
-         for clue in clues: # A list of the found clues
-            if clue == plrtrait:
-               istraited[index] = True
-         if istraited[index] == False:
-             break
-      if istraited[0] and istraited[1] and istraited[2]:
-         suspect.append([plrindex ,person["Name"]])
-   return suspect
+# Suspect Finder
+traittbl = {}
+temptbl = {}
+pointstbl = {}
 
-def start():
-   global cfgdata
-   cfgdata = LoadCfg()
-   clues = FindClues()
-   suspectable = FindSuspect(clues)
-   if len(suspectable) == 0:
-      print("No Suspect Found, Or Too Little Clues Given")
-   for suspect in suspectable:
-      print(f"And the suspect is: No°{suspect[0]+1} {suspect[1]}")
+def FindSuspect():
+    suspecttbl = []
+    for v in cfgdata["suspects"]:
+        pointstbl[v["Name"]] = 0
 
-start()
-while True:
-   print("")
-   print("Again?")
-   again = input()
-   if again == "y":
-         start()
-   else:
-    break
+    for plr in cfgdata["suspects"]:
+        for trait in plr["Traits"]:
+            if trait in traittbl:
+                pointstbl[plr["Name"]] += 1
+    for nome in pointstbl:
+        if pointstbl[nome] >= cfgdata["pointsrequired"]:
+            suspecttbl.append(nome)
+    print(suspecttbl)
+
+
+# GUI Generation
+dpg.create_context()
+with dpg.window(tag="CfgWindow", label="Config"):
+    pass
+with dpg.window(tag="Primary Window"):
+    pass
+def OpenCfg():
+    dpg.show_item("CfgWindow")
+
+def LoadWindows(Destroy):
+    if Destroy:
+        dpg.delete_item("CfgWindow", children_only=True)
+        dpg.delete_item("Primary Window", children_only=True)
+
+    dpg.push_container_stack("CfgWindow")
+    dpg.add_button(tag="SetLoad",label="Reload Config From File", callback=LoadCfg)
+    dpg.add_button(label="Save Config To File", callback=SaveCfg)
+    dpg.add_slider_int(tag="Points", label="Points Required To Show",
+                        max_value=cfgdata["maxpointsrequired"], min_value=cfgdata["minpointsrequired"])
+    dpg.set_value("Points", cfgdata["pointsrequired"])
+    dpg.pop_container_stack()
+
+    dpg.push_container_stack("Primary Window")
+    dpg.add_button(label="Open Config", callback=OpenCfg)
+    dpg.add_text("The Suspect is: None", tag="Suspect")
+    for obj in cfgdata["alltraits"]: # Creates A Checkbox For Each Trait
+        dpg.add_checkbox(label=obj, tag=obj)
+    dpg.pop_container_stack()
+    dpg.set_primary_window("Primary Window", True)
+LoadWindows(False)
+
+dpg.create_viewport(title='Armless Detective Suspect Finder', width=800, height=400)
+dpg.setup_dearpygui()
+dpg.show_viewport()
+dpg.start_dearpygui()
+
+while dpg.is_dearpygui_running():
+    for obj in cfgdata["alltraits"]:
+        if dpg.get_value(obj) == True:
+            traittbl[obj] = True
+        else:
+            if obj in traittbl:
+                traittbl.pop(obj)
+    if temptbl != traittbl:
+        FindSuspect()
+        temptbl = traittbl.copy()
+    dpg.render_dearpygui_frame()
+
+dpg.destroy_context()
