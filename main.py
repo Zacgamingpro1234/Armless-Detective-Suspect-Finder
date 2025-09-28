@@ -54,17 +54,21 @@ def LoadCfg(abc): # Loads the config, either default or .json
         dpg.set_value("Points", cfgdata["pointsrequired"])
         LoadWindows(True)
 LoadCfg(0)
-
 def SaveCfg():
-    print("Hi")
+    cfgdata["pointsrequired"] = dpg.get_value("Points")
+    with open(cfgpath, "w") as f:
+        json.dump(cfgdata, f, indent=4)
 
 # Suspect Finder
 traittbl = {}
+global temptbl
 temptbl = {}
 pointstbl = {}
 
 def FindSuspect():
-    suspecttbl = []
+    global finalsuspects
+    finalsuspects = None
+    suspecttbl = {}
     for v in cfgdata["suspects"]:
         pointstbl[v["Name"]] = 0
 
@@ -72,20 +76,41 @@ def FindSuspect():
         for trait in plr["Traits"]:
             if trait in traittbl:
                 pointstbl[plr["Name"]] += 1
-    for nome in pointstbl:
+    for nome, points in pointstbl.items():
+        if points not in suspecttbl:
+            suspecttbl[points] = []
         if pointstbl[nome] >= cfgdata["pointsrequired"]:
-            suspecttbl.append(nome)
-    print(suspecttbl)
+            suspecttbl[points].append(nome)
+    for i in range(cfgdata["maxpointsrequired"], 0, -1):
+        if i in suspecttbl:
+            for sussy in suspecttbl[i]:
+                if i == cfgdata["maxpointsrequired"]:
+                    finalsuspects = sussy
+                print(f"{sussy} level {i}")
+
+    dpg.set_value("Suspect", f"The Suspect Is: {finalsuspects}")
 
 
 # GUI Generation
 dpg.create_context()
-with dpg.window(tag="CfgWindow", label="Config"):
+with dpg.window(tag="CfgWindow", pos=[396, 0], autosize=True, label="Config"):
     pass
 with dpg.window(tag="Primary Window"):
     pass
+
 def OpenCfg():
     dpg.show_item("CfgWindow")
+
+def traitalert(CallTrait):
+    global temptbl
+    if dpg.get_value(CallTrait) == True:
+        traittbl[CallTrait] = True
+    else:
+        if CallTrait in traittbl:
+            traittbl.pop(CallTrait)
+    if temptbl != traittbl:
+        FindSuspect()
+        temptbl = traittbl.copy()
 
 def LoadWindows(Destroy):
     if Destroy:
@@ -102,28 +127,14 @@ def LoadWindows(Destroy):
 
     dpg.push_container_stack("Primary Window")
     dpg.add_button(label="Open Config", callback=OpenCfg)
-    dpg.add_text("The Suspect is: None", tag="Suspect")
+    dpg.add_text("The Suspect Is: None", tag="Suspect")
     for obj in cfgdata["alltraits"]: # Creates A Checkbox For Each Trait
-        dpg.add_checkbox(label=obj, tag=obj)
+        dpg.add_checkbox(label=obj, tag=obj, callback=traitalert)
     dpg.pop_container_stack()
     dpg.set_primary_window("Primary Window", True)
 LoadWindows(False)
-
 dpg.create_viewport(title='Armless Detective Suspect Finder', width=800, height=400)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.start_dearpygui()
-
-while dpg.is_dearpygui_running():
-    for obj in cfgdata["alltraits"]:
-        if dpg.get_value(obj) == True:
-            traittbl[obj] = True
-        else:
-            if obj in traittbl:
-                traittbl.pop(obj)
-    if temptbl != traittbl:
-        FindSuspect()
-        temptbl = traittbl.copy()
-    dpg.render_dearpygui_frame()
-
 dpg.destroy_context()
